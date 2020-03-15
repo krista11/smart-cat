@@ -29,7 +29,7 @@ if($method == 'POST'){
     echo json_encode($response);
 }
 else{
-    echo "Method not allowed";
+    echo "Method not allowed" + $method;
 }
 
 ?>
