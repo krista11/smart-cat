@@ -4,7 +4,7 @@ header('Content-Type: application/sjson');
 $requestBody = file_get_contents("php://input");
     $json = json_decode($requestBody);
 
-    $text = $json->queryResult->parameters->msg;
+    $text = $json->inputs->rawInputs->query;
 
     switch($text)
     {
