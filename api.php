@@ -1,35 +1,55 @@
 <?php
+include "deviceController.php";
+header('Content-Type: application/json');
 
-$method == $_SERVER['REQUEST_METHOD'];
+$res = array(
+    "fulfillmentText" => "This is a text response",
+    "source" => "smart/api.php",
+    "payload" => array(
+        "google" => array(
+            "expectUserResponse" => true,
+            "richResponse" => array(
+                "items" => array(
+                    "simpleResponse" => array(
+                        "textToSpeech" => "this is a simple response")
+                    ),
+                ),
+            ),
+        ),
+    "outputContexts" => array(
+        "name" => "projects/project-id/agent/sessions/session-id/contexts/context-name",
+        "lifespanCount" => 5,
+        "parameters" => array(
+            "param-name" => "param-value"
+        ),
+    ),
+);
 
-if($method == "POST"){
-    $requestBody = file_get_contents('php://input');
-    $json = json_decode($requestBody);
 
-    $text = $json->queryResult->parameters->msg;
+function processMessage($update){
 
-    switch($text)
-    {
-        case 'hi':
-            $speech = "Hi, nice to meet you";;
-            break;
-        case 'bye':
-            $speech = "Bye, see you soon";
-            break;
+    $parameters = $update["queryResult"]["parameters"];
+    $name = $update["queryResult"]["intent"]["name"];
+   
 
-        default:
-            $speech = "Sorry, I didn't get that. Please ask me some else.";
-            break;
-    }
+   
+    $data = new stdClass();
+    $data = array("payload" => array("google" => array("expectUserResponse" => true, "richResponse"=> array("items"=>array("simpleResponse"=>array("textToSpeech"=>"speech from webhook", "displayText"=>"Writen from webhook"))))));
+    $data["outputContext"]["name"] = $name;
 
-    $response = new \stdClass();
-    $response->speech = "";
-    $response->displayText = "";
-    $response->source = "webhook";
-    echo json_encode($response);
+    $data["fulfillmentText"] = parseParameters($parameters);
+
+    $response = json_encode($data);
+    echo $response;
 }
-else{
-    echo "Method not allowed";
-}
+
+$update_response = file_get_contents("php://input");
+$update = json_decode($update_response, true);
+processMessage($update);
+
+
+
+
+
 
 ?>

@@ -1,0 +1,49 @@
+body{
+    background: lightgreen;
+}
+.header{
+    margin:5%;
+
+    background-color: white;
+    height: 200px;
+    background-repeat: no-repeat;
+}
+.header img{
+    height: 200px;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+.header h1{
+    color: white;
+}
+.content{
+    align-items: center;
+    background-color: white;
+    margin:5%;
+    padding: 2%;
+}
+.meniu{
+	display:inline-block;
+    width:30%;
+}
+.info{
+    display:inline-block;
+    width:60%;
+}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+  }
+  
+ tr:nth-child(even) {
+    background-color: #fff1a4;
+  }
