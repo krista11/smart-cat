@@ -4,7 +4,6 @@ if(!isset($_SESSION["user_id"])){
     header("location: login");
 }
 ?>
-
         <!-- <img src="images/top.png" alt="bossy-cat-cat"> -->
 <!DOCTYPE html>
 <html>

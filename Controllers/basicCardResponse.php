@@ -27,7 +27,7 @@ function basicCardResponse(){
                   'subtitle' => 'Here you can see all your devices.',
                   'image' => 
                   array (
-                    'url' => 'https://825eca86.ngrok.io/bossy-cat/images/pijus.jpg',
+                    'url' => 'https://87b9d93e.ngrok.io//bossy-cat/images/pijus.jpg',
                     'accessibilityText' => 'My Bossy Cat'
                   ),
                   'buttons' => 
@@ -37,7 +37,7 @@ function basicCardResponse(){
                       'title' => 'Open',
                       'openUrlAction' => 
                       array (
-                        'url' => 'https://825eca86.ngrok.io/bossy-cat',
+                        'url' => 'https://87b9d93e.ngrok.io//bossy-cat',
                       ),
                     ),
                   ),

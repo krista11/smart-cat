@@ -15,7 +15,7 @@ class parameterController{
         if(isset($parameters["open-notes"])){
             $response = basicCardResponse();
         }
-        if(isset($parameters["device"])){
+        if($intent == "deviceSurvey"){
             switch($parameters["device"]){
                 case "lamp":
                     $response = parameterController::actions_with_lamp($parameters, $id);
@@ -25,8 +25,11 @@ class parameterController{
                     break;
             }
         }
-        if($intent == "lamp-intent"){
-            $response = parameterController::specific_lamp_actions($parameters, $id);
+        if($intent == "lamp-bright-intent"){
+            $response = parameterController::lamp_bright($parameters, $id);
+        }
+        if($intent == "lamp-color-intent"){
+            $response = parameterController::lamp_color($parameters, $id);
         }
         return $response;
     }
@@ -43,27 +46,25 @@ class parameterController{
             case "turn off":
                 $text = lampController::update_state($place, $id, "off", $user_id);
                 break;
-            case "add":
-                $text = lampController::add($place, $user_id);
-                break;
         }
         $response = simpleResponse($text);
         return $response;
     }
-    public static function specific_lamp_actions($parameters, $user_id){
+    public static function lamp_bright($parameters, $user_id){
+        $text = "Unknown action.";
         $brightness = $parameters["brightness"];
+        $id = $parameters["id"];
+        $place = $parameters["place"];
+        $text = lampController::set_brightness($brightness, $id, $place, $user_id);
+        $response = simpleResponse($text);
+        return $response;
+    }
+    public static function lamp_color($parameters, $user_id){
+        $text = "Unknown action.";
         $color = $parameters["color"];
         $id = $parameters["id"];
         $place = $parameters["place"];
-        $action = $parameters["action"];
-        switch($action){
-            case "set brightness":
-                $text = lampController::set_brightness($brightness, $id, $place, $user_id);
-                break;
-            case "set color":
-                $text = lampController::set_color($color, $id, $place, $user_id);
-                break;
-        }
+        $text = lampController::set_color($color, $id, $place, $user_id);
         $response = simpleResponse($text);
         return $response;
     }

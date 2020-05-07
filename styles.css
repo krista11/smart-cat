@@ -46,7 +46,7 @@ body{
 .mobile-menu a:hover {
     color: #5899E2;
 }
-@media only screen and (max-width: 600px){
+@media only screen and (max-width: 900px){
     .mobile-menu{
         display: block;
     }
@@ -72,7 +72,7 @@ body{
     text-align: center;
     background-color: white;
     margin:2% 5%;
-    padding: 2%;
+    padding: 0.1%;
 }
 
 .logout{
@@ -277,9 +277,28 @@ input[type=submit]:hover {
         margin: 2%;
     }
 }
-@media only screen and (max-width: 550px){
+@media only screen and (max-width: 650px){
     .table-wrapper{
         width: 80%;
         margin: 10%;
     }
 }
+.action-table-wrapper{
+    background-color: white;
+    padding: 40px;
+    width: auto;
+}
+table {
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+}
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+.action-table-wrapper tr:nth-child(even) {
+    background-color: #5899E2; 
+    color: white;
+}
+

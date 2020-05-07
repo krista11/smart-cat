@@ -24,6 +24,8 @@ function makeLampTable(){
         echo "no lamp";
     }else{
         for($i=0; $i<count($lamps); $i++){
+            $commands = Lamp_commands::getCommands($lamps[$i]["id"]);
+            
             $back_color = $lamps[$i]["color"];
             $color = "white";
             if($back_color == "white" || $back_color == "yellow"){
@@ -33,16 +35,23 @@ function makeLampTable(){
             <div id="lamp" class="table-wrapper">
                 <table id="device">
                     <tr>
-                        <th style="background-color:black; color:white;">Lamp #<?php echo $lamps[$i]["number"]; ?></th>
+                        <th style="background-color:black; color:white;">Lamp #<?php echo $lamps[$i]["number"]." ".$lamps[$i]["name"]; ?></th>
                     </tr>
+
+                    <?php if($commands[0]["color"] == "1"){ ?>
                     <tr>
                         <th>Color</th>
-                        <th style="background-color: <?php echo $back_color?>; color: <?php echo $color?>"><?php echo $lamps[$i]["color"] ?></th>
+                        <th style="background-color: <?php echo $back_color?>; color: <?php echo $color?>"><?php echo $back_color ?></th>
                     </tr>
+                    <?php } ?>
+
+                    <?php if($commands[0]["brightness"] == "1"){ ?>
                     <tr>
                         <th>Brigthness</th>
                         <th><?php echo $lamps[$i]["brightness"]; ?>%</th>
                     </tr>
+                    <?php } ?>
+
                     <tr>
                         <th>Place</th>
                         <th><?php echo $lamps[$i]["place"]; ?></th>
