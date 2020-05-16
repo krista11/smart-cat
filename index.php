@@ -29,7 +29,7 @@ if(!isset($_SESSION["user_id"])){
         <div class="tabs_wrapper">
             <?php makeTabs(); ?>
         </div>
-        <div id="all" class="device" style="display:block">
+        <div id="all" class="device showing" style="display:block">
             <?php makeTable(); ?>
         </div>
         <div id="lamp" class="device" style="display:none">

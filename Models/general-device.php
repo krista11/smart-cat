@@ -4,7 +4,7 @@ class generalDevices{
 
     public static function getAll($id){
         $id = intval($id);
-        $sql = "SELECT * FROM general_devices WHERE user_id = $id";
+        $sql = "SELECT * FROM general_devices WHERE user_id = $id ORDER BY number ASC";
         return mysql::select($sql);
     }
     public static function getById($id){
@@ -21,7 +21,7 @@ class generalDevices{
         $devices = generalDevices::getAll($user_id);
         $number = count($devices) +1;
         $sql = "INSERT INTO general_devices (id, type, name, number, state, building, room, user_id)
-                VALUES($id, $type, $name, $number, 'off', home, $room, $user_id)";
+                VALUES($id, $type, $name, $number, 'off', 'home', $room, $user_id)";
         $result = mysql::query($sql);
         return mysql::query($sql);
     }
