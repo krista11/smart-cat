@@ -20,7 +20,8 @@
         }
    }
 ?>
-<html>
+<!DOCTYPE html>
+<html lang="en-US">
     <head>
         <title>Bossy cat | Login </title>
         <meta charset="UTF-8">
@@ -34,7 +35,7 @@
                     <img src="images/cat-acc.png" alt="bossy-cat">
                 </div>
                 <div>
-                    <form action = "" method = "post">
+                    <form method = "post">
                         <input type= "email" name = "email" placeholder="your email.." required/><br /><br />
                         <input type="text" name="phrase" placeholder="matching phrase.." required/><br/><br />
                         <input type="submit" value = "Log in"/><br />

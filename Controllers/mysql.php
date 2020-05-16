@@ -1,5 +1,5 @@
 <?php 
-include 'C:\xampp\htdocs\bossy-cat\config.php';
+include 'config.php';
 /**
  * Database wrapper for a MySQL with PHP tutorial
  * 

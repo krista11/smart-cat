@@ -2,143 +2,121 @@
 require_once('C:\xampp\htdocs\bossy-cat\Controllers\mysql.php');
 class Lamp{
 
-    private $id;
-    private $name;
-    private $number;
-    private $brightness;
-    private $color;
-    private $place;
-    private $state;
-    private $last_turned_on;
-    private $used_time;
-    private $user_id;
-    private $commands;
-
-    public function __construct($id, $name, $number, $brightness, $color, $place, $state, $last_turned_on, $used_time, $user_id, $commands)
-    {
-        $this->id = $id;
-        $this->name = $name;
-        $this->number = $number;
-        $this->brightness = $brightness;
-        $this->color = $color;
-        $this->place = $place;
-        $this->state = $state;
-        $this->last_turned_on = $last_turned_on;
-        $this->used_time = $used_time;
-        $this->user_id = $user_id;
-        $this->commands = $commands;
-    }
-
-    function get_id(){
-        return $this->id;
-    }
-    function get_name(){
-        return $this->name;
-    }
-    function set_name($name){
-        $this->name = $name;
-    }
-    function set_number($number){
-        $this->number = $number;
-    }
-    function get_number(){
-        return $this->number;
-    }
-    function set_brightness($brightness){
-        $this->brightness = $brightness;
-    }
-    function get_brightness(){
-        return $this->brightness;
-    }
-    function set_color($color){
-        $this->color = $color;
-    }
-    function get_color(){
-        return $this->color;
-    }
-    function set_place($place){
-        $this->place = $place;
-    }
-    function get_place(){
-        return $this->place;
-    }
-    function set_state($state){
-        $this->state = $state;
-    }
-    function get_state(){
-        return $this->state;
-    }
-    function set_last_turned_on($last_turned_on){
-        $this->last_turned_on = $last_turned_on;
-    }
-    function get_last_turned_on(){
-        return $this->last_turned_on;
-    }
-    function set_used_time($used_time){
-        $this->used_time = $used_time;
-    }
-    function get_used_time(){
-        return $this->used_time;
-    }
-    function set_user_id($user_id){
-        $this->user_id = $user_id;
-    }
-    function get_user_id(){
-        return $this->user_id;
-    }
-    public static function add(Lamp $lamp){
-        $number = $lamp->get_number()*1;
-        $name = mysql::quote($lamp->get_name());
-        $brightness = $lamp->get_brightness()*1;
-        $color = mysql::quote($lamp->get_color());
-        $place = mysql::quote($lamp->get_place());
-        $state = mysql::quote($lamp->get_state());
-        $last_turned_on = mysql::quote($lamp->get_last_turned_on());
-        $used_time = mysql::quote($lamp->get_used_time());
-        $user_id = $lamp->get_user_id()*1;
-        $sql = "INSERT INTO lamp (number, brightness, color, place, state, last_turned_on, used_time, user_id, name)
-                VALUES($number, $brightness, $color, $place, $state, $last_turned_on, $used_time, $user_id, $name)";
-        return mysql::query($sql);
-    }
-    public static function get($user_id){
-        $id = $user_id * 1;
-        $con = mysql::quote("disconnect");
-        $sql = "SELECT * FROM lamp WHERE user_id = $id AND connection = $con ORDER BY number ASC";
+    public static function getAll($id){
+        $id = intval($id);
+        $sql = "SELECT * FROM lamp WHERE user_id = $id ORDER BY number ASC";
         return mysql::select($sql);
     }
-}
-class Lamp_commands{
-    private $state;
-    private $color;
-    private $brightness;
-
-    public function __construct($state, $color, $brightness){
-        $this->state = $state;
-        $this->color = $color;
-        $this->brightness = $brightness;
+    public static function delete($id){
+        $id = intval($id);
+        $sql = "DELETE FROM lamp WHERE id = $id";
+        mysql::query($sql);
     }
-    function set_state($state){
-        $this->state = $state;
+    public static function or_exist($room, $number, $state, $user_id, $building){
+        $room = mysql::quote($room);
+        $number = intval($number);
+        $state = mysql::quote($state);
+        $user_id = intval($user_id);
+        $building = mysql::quote($building);
+        if($building != "''" && $room == "''"){
+            $sql = "SELECT * FROM lamp WHERE state = $state AND user_id = $user_id AND building = $building";
+        }
+        if($building != "''" && $room != "''"){
+            $sql = "SELECT * FROM lamp WHERE state = $state AND user_id = $user_id AND building = $building AND room = $room";
+        }
+        if($building == "''" && $room == "''"){
+            $sql = "SELECT * FROM lamp WHERE state = $state AND user_id = $user_id";
+        }
+        if($building == "''" && $room != "''"){
+            $sql = "SELECT * FROM lamp WHERE room = $room AND state = $state AND user_id = $user_id";
+        }
+        if($number != ""){
+            $_number = $number*1;
+            $sql = "SELECT * FROM lamp WHERE number = $_number AND state = $state AND user_id = $user_id";
+        }
+        $result = mysql::select($sql);
+        return $result;
     }
-    function get_state(){
-        return $this->state;
+    public static function turnOn($id, $date){
+        $id = intval($id);
+        $date = mysql::quote($date);
+        $state = mysql::quote("on");
+        $sql = "UPDATE lamp SET state = $state, last_turned_on = $date WHERE id = $id";
+        mysql::query($sql);                        
     }
-    function set_color($color){
-        $this->color = $color;
+    public static function turnOff($id){
+        $id = intval($id);
+        $state = mysql::quote("off");
+        $sql = "UPDATE lamp SET state = $state WHERE id = $id";
+        mysql::query($sql);
     }
-    function get_color(){
-        return $this->color;
+    public static function updateUsedTime($h, $m, $s, $id){
+        $sql = "UPDATE lamp SET used_time = '$h:$m:$s' WHERE id = $id";
+        mysql::query($sql);
     }
-    function set_brightness($brightness){
-        $this->brightness = $brightness;
+    public static function updateBrightness($id, $brightness){
+        $id = intval($id);
+        $brightness = intval($brightness);
+        $sql = "UPDATE lamp SET brightness = $brightness WHERE id = $id";
+        mysql::query($sql);
     }
-    function get_brightness(){
-        return $this->brightness;
+    public static function updateColor($id, $color){
+        $id = intval($id);
+        $color = mysql::quote($color);
+        $sql = "UPDATE lamp SET color = $color WHERE id = $id";
+        mysql::query($sql);
     }
-    public static function getCommands($device_id){
-        $id = intval($device_id);
-        $sql = "SELECT * FROM lamp_commands WHERE device_id = $id";
+    public static function insert($device_id, $name, $room, $user_id){
+        $device_id = intval($device_id);
+        $name = mysql::quote($name);
+        $room = mysql::quote($room);
+        $user_id = intval($user_id);
+        $number = count(lamp::getAll($user_id))+1;
+        $sql = "INSERT INTO lamp (id, name, number, brightness, color, building, room, state, last_turned_on, used_time, user_id)
+                VALUES($device_id, $name, $number, 100, 'white', 'home', $room, 'off', '0000-00-00 00:00:00', '00:00:00', $user_id)";
+        $result = mysql::query($sql);
+    }
+    public static function updateNumber($id, $number){
+        $id = intval($id);
+        $number = intval($number);
+        $sql = "UPDATE lamp SET number = $number WHERE id = $id";
+        mysql::query($sql);
+    }
+    public static function makeObject($id){
+        $id = intval($id);
+        $sql = "SELECT id, name, number, brightness, color, state FROM lamp WHERE id = $id";
         return mysql::select($sql);
     }
+    public static function getByNumber($number, $user_id){
+        $number = intval($number);
+        $user_id = intval($user_id);
+        $sql = "SELECT * FROM lamp WHERE number = $number AND user_id = $user_id";
+        return mysql::select($sql);
+    }
+    public static function change_room($newRoom, $number, $user_id){
+        $newRoom = mysql::quote($newRoom);
+        $result = lamp::getByNumber($number, $user_id);
+        if(count($result) == 0){
+            return "You don't have lamp with this identification number.";
+        }
+        else{
+            $sql = "UPDATE lamp SET room = $newRoom WHERE number = $number AND user_id = $user_id";
+            mysql::query($sql);
+        }
+        return "Room changed successfully.";
+    }
+    public static function change_building($newBuilding, $number, $user_id){
+        $newBuilding = mysql::quote($newBuilding);
+        $result = lamp::getByNumber($number, $user_id);
+        if(count($result) == 0){
+            return "You don't have lamp with this identification number.";
+        }
+        else{
+            $sql = "UPDATE lamp SET building = $newBuilding WHERE number = $number AND user_id = $user_id";
+            mysql::query($sql);
+        }
+        return "Building changed successfully.";
+    }
 }
+
 ?>

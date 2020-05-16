@@ -6,9 +6,8 @@ if(!isset($_SESSION["user_id"])){
     header("location: login");
 }
 ?>
-        <!-- <img src="images/top.png" alt="bossy-cat-cat"> -->
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
@@ -18,7 +17,6 @@ if(!isset($_SESSION["user_id"])){
 </head>
 
 <body>
-
 <?php makeHeader(); ?>
 
 <div class="page">
@@ -27,13 +25,20 @@ if(!isset($_SESSION["user_id"])){
         <h1>Action log</h1>
     </div>
     <div class="content2">
+        
         <div class="action-table-wrapper">
+        <p class="annotation">The table shows the requests you have made to the Bossy Cat agent in the last 24 hours.</p>
             <?php makeActionLogTable(); ?>
         </div>
-    </div>
-    </div>
-
-    
+    </div>    
 </div>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    setInterval(function(){
+        $(".action-table-wrapper").load(location.href + " .action-table-wrapper>*","");
+    }, 4000);
+});
+</script>
 </body>
 </html>

@@ -9,26 +9,27 @@ body{
     position: relative;
     overflow: hidden;
     background-color: white;
-    
 }
-.menu a, .mobile-menu a {
+.menu a {
     color: black;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
-    font-size: 20px;
 }
-
 .menu a:hover {
     color: #5899E2;
 } 
-.menu-centered a {
-    float: none;
+.menu-centered{
     position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 25px;
+    left: 5%;
+    transform: translate(0%, -50%);
+    font-size: 20px;
+}
+.menu-centered a{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 .menu-right {
     position: absolute;
@@ -36,22 +37,22 @@ body{
     right: 5%;
     transform: translate(0%, -50%);
 }
-.mobile-menu{
-    text-align: center;
-    font-family: 'Roboto', sans-serif;
-    height: 25px;
-    background-color: white;
-    display: none;
-}
-.mobile-menu a:hover {
-    color: #5899E2;
-}
-@media only screen and (max-width: 900px){
-    .mobile-menu{
+@media only screen and (max-width: 500px){
+    .menu{
+        height: 100px;
+        padding: 0px;
+    }
+    .menu-centered{
         display: block;
+        width: 100%;
+        position: unset;
+        transform: none;
     }
     .menu-right{
-        display: none;
+        display: block;
+        width: 100%;
+        text-align: center;
+        position: unset;
     }
 }
 .header-wrapper{
@@ -256,6 +257,9 @@ input[type=submit]:hover {
     padding: 10px;
     font-size: 20px;
     outline: 0px;
+    margin-right: 5px;
+    border-radius: 5px 5px 0px 0px;
+    width:70px;
 }
 .device_tab:hover{
     background-color: white;
@@ -283,22 +287,54 @@ input[type=submit]:hover {
         margin: 10%;
     }
 }
-.action-table-wrapper{
+#all, .action-table-wrapper{
     background-color: white;
     padding: 40px;
     width: auto;
+    overflow-x:auto;
 }
-table {
+#all table{
+    border-collapse: collapse;
+    width:100%;
+    text-align: left;
+}
+.action-table-wrapper table {
     border-collapse: collapse;
     margin-left: auto;
     margin-right: auto;
-}
-th, td {
+    width:80%;
     text-align: left;
-    padding: 8px;
 }
-.action-table-wrapper tr:nth-child(even) {
-    background-color: #5899E2; 
-    color: white;
+@media only screen and (max-width: 768px){
+    .action-table-wrapper {
+        padding: 5px;
+    }
+    .annotation, .action-table-wrapper table{
+        width:90% !important;
+    }
 }
 
+#all th, .action-table-wrapper th{
+    background-color: #5899E2; 
+    color: white;
+    font-size: large;
+}
+#all td, #all th, .action-table-wrapper td, .action-table-wrapper th {
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+#all tr:nth-child(even), .action-table-wrapper tr:nth-child(even){
+    background-color: #f2f2f2;
+}
+#all tr:hover,.action-table-wrapper tr:hover{
+    background-color: #ddd;
+}
+.annotation{
+    width:80%;
+    margin-left: auto;
+    margin-right: auto;
+}
+#header-img{
+    height: 50px;
+    width: auto;
+}

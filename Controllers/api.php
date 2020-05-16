@@ -22,7 +22,7 @@ function processMessage($update){
         User_log::addRequest($id, $request);
         $data = parameterController::parseParameters($intent, $parameters, $id);
     }else{
-        $data = "Problem with autorization.";
+        $data = simpleResponse("Problem with autorization.");
     }
     array_push($data, array("outputContext" => array( 0 => array("name" => $code))));
     $response = json_encode($data);
