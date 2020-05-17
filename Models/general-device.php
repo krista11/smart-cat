@@ -49,29 +49,18 @@ class generalDevices{
         $number = intval($number);
         $type = mysql::quote($type);
         $building = mysql::quote($building);
-        if($building != "''" && $room == "''" && $type == "''"){
-            $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state AND building = $building";
-        }
-        if($building != "''" && $room != "''" && $type == "''"){
-            $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state AND building = $building AND room = $room";
-        }
+
         if($building != "''" && $room != "''" && $type != "''"){
             $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state AND building = $building AND room = $room AND type = $type";
         }
         if($building != "''" && $room == "''"&& $type != "''"){
             $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state AND building = $building AND type = $type";
         }
-        if($building == "''" && $room != "''" && $type == "''"){
-            $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state AND room = $room";
-        }
         if($building == "''" && $room == "''" && $type != "''"){
             $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state AND type = $type";
         }
         if($building == "''" && $room != "''" && $type != "''"){
             $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state AND type = $type AND room = $room";
-        }
-        if($building == "''" && $room == "''"&& $type == "''"){
-            $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state";
         }
         if($number != ""){
             $sql = "SELECT * FROM general_devices WHERE number = $number  AND user_id = $user_id AND state = $state";
