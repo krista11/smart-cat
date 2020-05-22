@@ -5,7 +5,14 @@ require_once('Models\kettle.php');
 require_once('Models\general-device.php');
 require_once('Models\lamp-commands.php');
 require_once('Models\kettle-commands.php');
-
+require_once('Models\dbListener.php');
+function cleanListener(){
+    dbListener::clean();
+}
+function getChangesCounter(){
+    $listener = dbListener::get();
+    return $listener[0]["number"];
+}
 function makeTabs(){
     $id =  $_SESSION['user_id']*1;
     $lamps = Lamp::getAll($id);
@@ -35,6 +42,7 @@ function makeTable(){
     $general = generalDevices::getAll($id);
     $counter = 1;
     ?>
+    <div class="pc_table">
     <table id="device" class="allDevices">
         <tr>
             <th>No.</th>
@@ -83,6 +91,7 @@ function makeTable(){
         }
         ?>
     </table>
+    </div>
     <?php
 }
 
@@ -95,49 +104,46 @@ function makeLampTable(){
         for($i=0; $i<count($lamps); $i++){
             $commands = Lamp_commands::getCommands($lamps[$i]["id"]);
             $back_color = $lamps[$i]["color"];
-            $color = "white";
-            if($back_color == "white" || $back_color == "yellow"){
-                $color = "black";
-            }
             ?>
             <div  class="table-wrapper">
                 <table id="device">
                     <tr>
-                        <th style="background-color:black; color:white;">Lamp #<?php echo $lamps[$i]["number"]." ".$lamps[$i]["name"]; ?></th>
+                        <th colspan="2" style="background-color:black; color:white;">Lamp #<?php echo $lamps[$i]["number"]." ".$lamps[$i]["name"]; ?></th>
                     </tr>
 
                     <?php if($commands[0]["color"] == "1"){ ?>
                     <tr>
-                        <th>Color</th>
-                        <th style="background-color: <?php echo $back_color?>; color: <?php echo $color?>"><?php echo $back_color ?></th>
+                        <td>Color</td>
+                        
+                        <td><div class="circle" style="background-color:<?php echo $back_color?>"></div><?php echo $back_color ?></td>
                     </tr>
                     <?php } ?>
 
                     <?php if($commands[0]["brightness"] == "1"){ ?>
                     <tr>
-                        <th>Brigthness</th>
-                        <th><?php echo $lamps[$i]["brightness"]; ?>%</th>
+                        <td>Brigthness</td>
+                        <td><?php echo $lamps[$i]["brightness"]; ?>%</td>
                     </tr>
                     <?php } ?>
                     <tr>
-                        <th>Building</th>
-                        <th><?php echo $lamps[$i]["building"]; ?></th>
+                        <td>Building</td>
+                        <td><?php echo $lamps[$i]["building"]; ?></td>
                     </tr>
                     <tr>
-                        <th>Room</th>
-                        <th><?php echo $lamps[$i]["room"]; ?></th>
+                        <td>Room</td>
+                        <td><?php echo $lamps[$i]["room"]; ?></td>
                     </tr>
                     <tr>
-                        <th>State</th>
-                        <th><?php echo $lamps[$i]["state"]; ?></th>
+                        <td>State</td>
+                        <td><?php echo $lamps[$i]["state"]; ?></td>
                     </tr>
                     <tr>
-                        <th>The time when the light was last turned on</th>
-                        <th><?php echo $lamps[$i]["last_turned_on"]; ?></th>
+                        <td>The time when the light was last turned on</td>
+                        <td><?php echo $lamps[$i]["last_turned_on"]; ?></td>
                     </tr>
                     <tr>
-                        <th>How long was the light been on last time</th>
-                        <th><?php echo $lamps[$i]["used_time"]; ?></th>
+                        <td>How long was the light been on last time</th>
+                        <td><?php echo $lamps[$i]["used_time"]; ?></th>
                     </tr>
                 </table>
             </div>
@@ -156,32 +162,29 @@ function makeKettleTable(){
             <div class="table-wrapper">
                 <table id="device">
                     <tr>
-                        <th style="background-color:black; color:white;">Kettle #<?php echo $kettles[$i]["number"]." ".$kettles[$i]["name"]; ?></th>
+                        <th colspan="2" style="background-color:black; color:white;">Kettle #<?php echo $kettles[$i]["number"]." ".$kettles[$i]["name"]; ?></th>
                     </tr>
                     <tr>
-                        <th>Water temperature</th>
-                        <th><?php echo $kettles[$i]["temperature"]; ?></th>
+                        <td>Water temperature</td>
+                        <td><?php echo $kettles[$i]["temperature"]; ?></td>
                     </tr>
                     <tr>
-                        <th>Water level</th>
-                        <th><?php echo $kettles[$i]["waterLevel"]; ?></th>
+                        <td>Water level</td>
+                        <td><?php echo $kettles[$i]["waterLevel"]; ?></td>
                     </tr>
                     <tr>
-                        <th>Building</th>
-                        <th><?php echo $kettles[$i]["building"]; ?></th>
+                        <td>Building</td>
+                        <td><?php echo $kettles[$i]["building"]; ?></td>
                     </tr>
                     <tr>
-                        <th>Room</th>
-                        <th><?php echo $kettles[$i]["room"]; ?></th>
+                        <td>Room</td>
+                        <td><?php echo $kettles[$i]["room"]; ?></td>
                     </tr>
                     <tr>
-                        <th>State</th>
-                        <th><?php echo $kettles[$i]["state"]; ?></th>
+                        <td>State</td>
+                        <td><?php echo $kettles[$i]["state"]; ?></td>
                     </tr>
-                    <tr>
-                        <th>When to start to boil water</th>
-                        <th><?php echo $kettles[$i]["whenToBoil"]; ?></th>
-                    </tr>
+
                 </table>
             </div>
         <?php
@@ -195,22 +198,26 @@ function makeGeneralTable(){
         echo "no general devices";
     }else{
         for($i=0; $i<count($devices); $i++){?>
-            <div class="table-wrapper">
+            <div class="general-devices-table">
                 <table id="device">
                     <tr>
-                        <th style="background-color:black; color:white;">#<?php echo $devices[$i]["number"]." ".$devices[$i]["name"]; ?></th>
+                        <th colspan="2" style="background-color:black; color:white;">#<?php echo $devices[$i]["number"]." ".$devices[$i]["name"]; ?></th>
                     </tr>
                     <tr>
-                        <th>Building</th>
-                        <th><?php echo $devices[$i]["building"]; ?></th>
+                        <td>Type</td>
+                        <td><?php echo $devices[$i]["type"]; ?></td>
                     </tr>
                     <tr>
-                        <th>Room</th>
-                        <th><?php echo $devices[$i]["room"]; ?></th>
+                        <td>Building</td>
+                        <td><?php echo $devices[$i]["building"]; ?></td>
                     </tr>
                     <tr>
-                        <th>State</th>
-                        <th><?php echo $devices[$i]["state"]; ?></th>
+                        <td>Room</td>
+                        <td><?php echo $devices[$i]["room"]; ?></td>
+                    </tr>
+                    <tr>
+                        <td>State</td>
+                        <td><?php echo $devices[$i]["state"]; ?></td>
                     </tr>
                 </table>
                 

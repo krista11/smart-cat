@@ -3,13 +3,15 @@ include "mysql.php";
 include "parameterController.php";
 include "userController.php";
 include "../Models/user_log.php";
+include "../Models/dbListener.php";
 header('Content-Type: application/json');
-
 $update_response = file_get_contents("php://input");
 $update = json_decode($update_response, true);
 processMessage($update);
 
 function processMessage($update){
+    dbListener::update();
+    
     $request = $update["queryResult"]["queryText"];
 
     $parameters = $update["queryResult"]["parameters"];

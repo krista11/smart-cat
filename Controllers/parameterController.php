@@ -8,7 +8,7 @@ include 'kettleController.php';
 include 'generalController.php';
 class parameterController{
     public static function parseParameters($intent, $parameters, $id){
-        $response = simpleResponse("Sorry, can't help with what.");
+        $response = simpleResponse("Sorry, can't help with that.");
         if(isset($parameters["phrase"])){
             $user = new User($id, "", $parameters["email"], $parameters["phrase"]);
             $response = parameterController::setPhrase($user);
@@ -66,7 +66,8 @@ class parameterController{
         $brightness = $parameters["brightness"];
         $id = $parameters["id"];
         $room = $parameters["room"];
-        $text = lampController::set_brightness($brightness, $id, $room, $user_id);
+        $building = $parameters["building"];
+        $text = lampController::set_brightness($brightness, $id, $room, $user_id, $building);
         $response = simpleResponse($text);
         return $response;
     }
@@ -75,7 +76,8 @@ class parameterController{
         $color = $parameters["color"];
         $id = $parameters["id"];
         $room = $parameters["room"];
-        $text = lampController::set_color($color, $id, $room, $user_id);
+        $building = $parameters["building"];
+        $text = lampController::set_color($color, $id, $room, $user_id, $building);
         $response = simpleResponse($text);
         return $response;
     }

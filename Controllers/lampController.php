@@ -10,7 +10,7 @@ class lampController{
         }
         $result = lamp::or_exist($room, $id, $rev_state, $user_id, $building);
         if(count($result) == 0){
-            return "Can't find the lamp.";
+            return "Can't find the lamp to turn it ".$state.".";
         }
         else{
             for($i=0; $i < count($result); $i++){
@@ -60,10 +60,13 @@ class lampController{
             lamp::updateUsedTime($h, $m, $s, $id);
         }            
     }
-    public static function set_brightness($brightness, $number, $room, $user_id){
+    public static function set_brightness($brightness, $number, $room, $user_id, $building){
         //change the brightness of the turned on lamp
-        $result = lamp::or_exist($room, $number, "on", $user_id);
         $_brightness = intval(rtrim($brightness, "%"));
+        if($_brightness > 100 || $brightness < 20){
+            return "Invalid brightness value. Brightness can be from 20 to 100%";
+        }
+        $result = lamp::or_exist($room, $number, "on", $user_id, $building);
         $counter = 0;
         if(count($result) == 0){
             return "Can't find the lamps turned on.";
@@ -84,9 +87,13 @@ class lampController{
         }
         return "OK, brightness was setted.";
     }
-    public static function set_color($color, $number, $room, $user_id){
+    public static function set_color($color, $number, $room, $user_id, $building){
         //change the color of the turned on lamp
-        $result = lamp::or_exist($room, $number, "on", $user_id);
+        $colors = array("white", "red", "green", "blue", "yellow");
+        if(!in_array($color, $colors)){
+            return "Device don't have ".$color." color. Try white, red, green, blue or yellow.";
+        }
+        $result = lamp::or_exist($room, $number, "on", $user_id, $building);
         $counter = 0;
         if($result == false){
             return "There are no lights on here.";

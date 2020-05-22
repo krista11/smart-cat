@@ -236,11 +236,21 @@ input[type=submit]:hover {
     text-align: left;
     color: black;
 }
+
 .table-wrapper{
     margin-bottom: 20px;
     display: inline-block;
     width: 39%;
     margin:2% 5%;
+}
+.general-devices-table{
+    margin-bottom: 20px;
+    display: inline-block;
+    width: 18%;
+    margin:2% 3%;
+}
+.general-devices-table table{
+    width:100%;
 }
 .tabs_wrapper{
     text-align: left;
@@ -275,6 +285,25 @@ input[type=submit]:hover {
 .device{
     background-color: white;
 }
+@media only screen and (max-width: 1080px){
+    .general-devices-table{
+        width: 30%;
+        margin: 1%;
+    }
+}
+@media only screen and (max-width: 750px){
+    .general-devices-table{
+        width: 47%;
+        margin: 1%;
+    }
+}
+@media only screen and (max-width: 500px){
+    .general-devices-table{
+        width: 92%;
+        margin: 4%;
+    }
+}
+
 @media only screen and (max-width: 750px){
     .table-wrapper{
         width: 45%;
@@ -337,4 +366,18 @@ input[type=submit]:hover {
 #header-img{
     height: 50px;
     width: auto;
+}
+.circle {
+    height: 25px;
+    width: 25px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+}
+span{
+    font-style: italic; 
+    font-weight: bold;
 }

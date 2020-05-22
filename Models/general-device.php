@@ -50,11 +50,20 @@ class generalDevices{
         $type = mysql::quote($type);
         $building = mysql::quote($building);
 
+        if($building != "''" && $room == "''" && $type == "''"){
+            $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state AND building = $building";
+        }
+        if($building != "''" && $room != "''" && $type == "''"){
+            $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state AND building = $building AND room = $room";
+        }
         if($building != "''" && $room != "''" && $type != "''"){
             $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state AND building = $building AND room = $room AND type = $type";
         }
         if($building != "''" && $room == "''"&& $type != "''"){
             $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state AND building = $building AND type = $type";
+        }
+        if($building == "''" && $room != "''" && $type == "''"){
+            $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state AND room = $room";
         }
         if($building == "''" && $room == "''" && $type != "''"){
             $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state AND type = $type";
@@ -62,7 +71,13 @@ class generalDevices{
         if($building == "''" && $room != "''" && $type != "''"){
             $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state AND type = $type AND room = $room";
         }
-        if($number != ""){
+        if($building == "''" && $room == "''"&& $type == "''"){
+            $sql = "SELECT * FROM general_devices WHERE user_id = $user_id AND state = $state";
+        }
+        if($number != "" && $type != "''"){
+            $sql = "SELECT * FROM general_devices WHERE number = $number  AND user_id = $user_id AND state = $state AND type = $type";
+        }
+        if($number != "" && $type == "''"){
             $sql = "SELECT * FROM general_devices WHERE number = $number  AND user_id = $user_id AND state = $state";
         }
         $result = mysql::select($sql);

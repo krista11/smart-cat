@@ -14,17 +14,14 @@ if(!isset($_SESSION["user_id"])){
 <link type="text/css" rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap">
 </head>
-
 <body>
 
 <?php makeHeader(); ?>
-
 <div class="page">
     <div class="content">
         <h1>YOUR DEVICES</h1>
         <p>Here you can see the available devices, their status and location.</p>
     </div>
-
     <div id="devices" class="content2">
         <div class="tabs_wrapper">
             <?php makeTabs(); ?>
@@ -43,15 +40,25 @@ if(!isset($_SESSION["user_id"])){
         </div>
     </div>
 </div>
+<div id="dbListener" style="display:none">
+        <?php echo getChangesCounter(); ?>
+</div>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript">
+
 $(document).ready(function(){
+    var first = $("#dbListener").text();
     setInterval(function(){
-        $("#lamp.showing").load(location.href + " #lamp>*"+"");
-        $("#kettle.showing").load(location.href + " #kettle>*"+"");
-        $("#general.showing").load(location.href + " #general>*"+"");
-        $("#all.showing").load(location.href + " #all>*"+"");
-    }, 4000);
+        $("#dbListener").load(location.href +" #dbListener");
+        var listener = $("#dbListener").text();
+        if(first != listener){
+            $("#lamp").load(location.href + " #lamp>*"+"");
+            $("#kettle").load(location.href + " #kettle>*"+"");
+            $("#general").load(location.href + " #general>*"+"");
+            $("#all").load(location.href + " #all>*"+"");
+            first = listener;
+        }
+    }, 2000);
 });
 function openDevice(tab, deviceName) {
   var x = document.getElementsByClassName("device");
